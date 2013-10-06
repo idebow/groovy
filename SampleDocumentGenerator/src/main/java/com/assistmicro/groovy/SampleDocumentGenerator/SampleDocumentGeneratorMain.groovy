@@ -1,6 +1,7 @@
 package com.assistmicro.groovy.SampleDocumentGenerator
 
 
+import java.awt.TexturePaintContext.Int;
 import java.lang.StringBuilder
 
 import BufferedReader
@@ -13,7 +14,7 @@ public class SampleDocumentGeneratorMain {
 	//生成ファイル数上限
 
 	//最大階層数
-	private Long directoryHierarchyDepth=5
+	private Long directoryHierarchyDepth=4
 	//ファイル/フォルダ番号共通カウンタ
 	private Long fileDirNoConter = 1
 	//マスタサンプルデータ
@@ -21,36 +22,44 @@ public class SampleDocumentGeneratorMain {
 	//1フォルダに生成するファイル数の上限 デフォルトは100
 	private Long filesToBeCreate = 100
 	//1フォルダに生成するフォルダ数の上限
-	private Long directoriesToBeCreate=100
+	private Long directoriesToBeCreate=5
 	//生成するファイルの長さ設定デフォルトは50KB
 	private Long targetfileLength=51200
 
 	//ファイルデリミタ
 	private String FS = File.separator
 
-	
-	
-	//ファイル生成のメイン処理
+
+
+	//ファイル生成のコンストラクタ
 	public SampleDocumentGeneratorMain() {
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
 
 	//ディレクトリ構造体とファイルの一括生成
-	public generateSampleStructure( String directoryPath){
-		BigDecimal fileCount
-		BigDecimal dirCount
-		String subDirectory
+	public Void generateSampleStructure( String directoryPath, Long depth=1){
+		BigDecimal fileCount=0
+		BigDecimal dirCount=0
 		//サンプルファイル作成
-		generateTextFiles(directoryPath)
-		if (isTaskCompleted)  {
+		//generateTextFiles(directoryPath)
+		if  (depth >= directoryHierarchyDepth) {
+			--depth
 			return
+		} else {
+			while (dirCount <=directoriesToBeCreate){
+				//サブディレクトリの追加
+				String subDirectory = directoryPath + FS + this.getNewSubDirectoryName()
+				File fl = new File(subDirectory)
+				fl.mkdirs()
+				println subDirectory
+				fl = null
+				dirCount++
+				//recursive call
+				generateSampleStructure(subDirectory,++depth)
+			}
+			
 		}
-		//サブディレクトリの追加
-		subDirectory = directoryPath + FS + getNewSubDirectoryName
-
-		//recursive call
-		generateSampleStructure(subDirectory)
 	}
 
 	//終了判定処理
@@ -92,14 +101,14 @@ public class SampleDocumentGeneratorMain {
 	}
 	private String getNewSubDirectoryName(){
 		//最新のシリアル番号を取得
-		getFileDirSerialNo.toString()
+		this.getFileDirSerialNo().toString()
 	}
 	//ファイルとフォルダ共通のシリアル番号を返却する
-	private getFileDirSerialNo(){
+	private Long getFileDirSerialNo(){
 		fileDirNoConter++
 	}
 
-		//サンプルファイル読み込みクラス
+	//サンプルファイル読み込みクラス
 	class SampleReader{
 		//ファイルインプットストリーム
 		private BufferedReader br
