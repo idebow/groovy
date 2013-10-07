@@ -14,7 +14,7 @@ public class SampleDocumentGeneratorMain {
 	//生成ファイル数上限
 
 	//最大階層数
-	private Long directoryHierarchyDepth=4
+	private Long directoryHierarchyDepth=5
 	//ファイル/フォルダ番号共通カウンタ
 	private Long fileDirNoConter = 1
 	//マスタサンプルデータ
@@ -41,10 +41,13 @@ public class SampleDocumentGeneratorMain {
 	public Void generateSampleStructure( String directoryPath, Long depth=1){
 		BigDecimal fileCount=0
 		BigDecimal dirCount=0
+		
+		++depth
+		println depth.toString()
 		//サンプルファイル作成
 		//generateTextFiles(directoryPath)
 		if  (depth >= directoryHierarchyDepth) {
-			--depth
+			println "max depth"
 			return
 		} else {
 			while (dirCount <=directoriesToBeCreate){
@@ -56,7 +59,7 @@ public class SampleDocumentGeneratorMain {
 				fl = null
 				dirCount++
 				//recursive call
-				generateSampleStructure(subDirectory,++depth)
+				generateSampleStructure(subDirectory,depth)
 			}
 			
 		}
