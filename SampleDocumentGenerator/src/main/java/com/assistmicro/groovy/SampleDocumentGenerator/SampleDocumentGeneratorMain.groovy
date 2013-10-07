@@ -4,9 +4,6 @@ package com.assistmicro.groovy.SampleDocumentGenerator
 import java.awt.TexturePaintContext.Int;
 import java.lang.StringBuilder
 
-import BufferedReader
-import BufferedWriter
-
 public class SampleDocumentGeneratorMain {
 
 	//フィールド設定
@@ -20,7 +17,7 @@ public class SampleDocumentGeneratorMain {
 	//マスタサンプルデータ
 	private String sampleFile=""
 	//1フォルダに生成するファイル数の上限 デフォルトは100
-	private Long filesToBeCreate = 100
+	private Long filesToBeCreate = 3
 	//1フォルダに生成するフォルダ数の上限
 	private Long directoriesToBeCreate=5
 	//生成するファイルの長さ設定デフォルトは50KB
@@ -29,23 +26,28 @@ public class SampleDocumentGeneratorMain {
 	//ファイルデリミタ
 	private String FS = File.separator
 
-
-
+	private SampleReader sr
+	
 	//ファイル生成のコンストラクタ
 	public SampleDocumentGeneratorMain() {
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-
-	//ディレクトリ構造体とファイルの一括生成
+	public setBaseSampleData(String SampleDataPath){
+		sr = new SampleReader(SampleDataPath)
+	}
+	
+		//ディレクトリ構造体とファイルの一括生成
 	public Void generateSampleStructure( String directoryPath, Long depth=1){
 		BigDecimal fileCount=0
 		BigDecimal dirCount=0
-		
+
 		++depth
 		println depth.toString()
 		//サンプルファイル作成
-		//generateTextFiles(directoryPath)
+		for (Long i=1;i <=filesToBeCreate;i++){
+			generateTextFile(directoryPath)
+		}
 		if  (depth >= directoryHierarchyDepth) {
 			println "max depth"
 			return
@@ -61,66 +63,59 @@ public class SampleDocumentGeneratorMain {
 				//recursive call
 				generateSampleStructure(subDirectory,depth)
 			}
-			
 		}
-	}
-
-	//終了判定処理
-	private boolean isTaskCompleted(){
-
 	}
 
 	//ファイル生成
-	public generateTextFiles(String directoryPath){
-		StringBuilder sb
+	public generateTextFile(String directoryPath){
+		StringBuilder sb = new StringBuilder()
 		BufferedWriter bw
 		//指定の個数を生成するまでループ
-		for (Long i=1;i <=filesToBeCreate;i++){
-			//サンプルファイルからデータを読み込んで新しいファイルへ書込む
-			String filname = getNewFileName
-			bw = new BufferedWriter(new FileWriter(new File(directoryPath + FS + filname)))
-			for(;;){
-				//マスターデータからサンプルデータ読み出し
-				sb.append(SampleReader.getNextLine)
-				sb.newLine
-				//データ長チェック処理
-				if(sb.length >=targetfileLength) {
-					//最後に名前データを追加
-					//ファイル書き込み
-					bw.write(sb)
-					//フラッシュ
-					bw.flush
-					bw.close
-					sb.setLength(0)
-					break
-				}
+		//サンプルファイルからデータを読み込んで新しいファイルへ書込む
+		String filname = getNewFileName()
+		bw = new BufferedWriter(new FileWriter(new File(directoryPath + FS + filname)))
+		Long fileLength=0
+		for(;;){
+			//マスターデータからサンプルデータ読み出し
+			//				sb.append(SampleReader.getNextLine())
+			fileLength = fileLength + ("テスト\n").getBytes().length
+			sb.append("テスト\n")
+			//データ長チェック処理
+			if(fileLength >=targetfileLength) {
+				break
 			}
-			//ファイルクローズ
 		}
+		bw.write(sb.toString())
+		bw.flush()
+		bw.close()
+		sb.setLength(0)
 	}
 	private String getNewFileName(){
 		//最新のシリアル番号からファイル名を生成
-		getFileDirSerialNo.toString() + ".txt"
+		return getFileDirSerialNo().toString() + ".txt"
 	}
 	private String getNewSubDirectoryName(){
 		//最新のシリアル番号を取得
-		this.getFileDirSerialNo().toString()
+		getFileDirSerialNo().toString()
 	}
 	//ファイルとフォルダ共通のシリアル番号を返却する
 	private Long getFileDirSerialNo(){
 		fileDirNoConter++
 	}
-
-	//サンプルファイル読み込みクラス
-	class SampleReader{
-		//ファイルインプットストリーム
-		private BufferedReader br
-		public SampleReader(){
-
-		}
-
-		public String getNextLine(){
-			String data = "test"
-		}
+	//終了判定処理
+	private boolean isTaskCompleted(){
 	}
 }
+
+
+////サンプルファイル読み込みクラス
+//class SampleReader{
+//	//ファイルインプットストリーム
+//	private BufferedReader br
+//	public SampleReader(){
+//		null
+//	}
+//	public String getNextLine(){
+//		return "test"
+//	}
+//}

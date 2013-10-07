@@ -5,5 +5,6 @@ import com.assistmicro.groovy.SampleDocumentGenerator.SampleDocumentGeneratorMai
 SampleDocumentGeneratorMain s = new SampleDocumentGeneratorMain()
 
 
-s.generateSampleStructure("/Users/999/Documents/home")
+//s.generateSampleStructure("/Users/999/Documents/home")
+s.generateSampleStructure("C:\\WORK\\testdata\\files")
 
