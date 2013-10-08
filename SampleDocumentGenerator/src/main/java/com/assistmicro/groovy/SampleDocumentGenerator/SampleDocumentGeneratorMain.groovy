@@ -3,6 +3,7 @@ package com.assistmicro.groovy.SampleDocumentGenerator
 
 import java.awt.TexturePaintContext.Int;
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
 
 public class SampleDocumentGeneratorMain {
 
@@ -51,8 +52,13 @@ public class SampleDocumentGeneratorMain {
 	public setSearchIdData(String FilePath){
 		searchIdReader = new SearchIdentiferReader(FilePath)
 	}
+
+	public generate( String directoryPath, Long depth=0){
+		resetCreatedFileCount()
+		generateSampleStructure( directoryPath, depth)
+	}
 	//ディレクトリ構造体とファイルの一括生成
-	public void generateSampleStructure( String directoryPath, Long depth=1){
+	private void generateSampleStructure( String directoryPath, Long depth){
 		BigDecimal fileCount=0
 		BigDecimal dirCount=0
 		++depth
@@ -153,6 +159,9 @@ public class SampleDocumentGeneratorMain {
 	private Long getCreatedFileCount(){
 		return createdFileCount
 	}
+	private resetCreatedFileCount(){
+		createdFileCount=0
+	}
 
 	//出力ファイルエンコーディング設定
 	public setOutFileEncoding(String encoding){
@@ -188,9 +197,12 @@ public class SampleDocumentGeneratorMain {
 	public String getSearchKeyFile(){
 		this.searchKeyFile
 	}
+
 	//日付をとる
 	public String getSystemDateString(){
-		return (new Date(System.currentTimeMillis())).format("yyyy/MM/dd HH:MM:ss")
+		Date nowDate = new Date()
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy'-'MM'-'dd'-'HH'-'mm'-'ss")
+		return sdf.format(nowDate)
 	}
 
 }

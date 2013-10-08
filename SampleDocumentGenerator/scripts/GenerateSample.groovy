@@ -4,31 +4,32 @@ import com.assistmicro.groovy.SampleDocumentGenerator.SampleDocumentGeneratorMai
 
 SampleDocumentGeneratorMain s = new SampleDocumentGeneratorMain()
 
-println "[" + s.getSystemDateString() + "] 処理を開始しました。" 
+println "[" + s.getSystemDateString() + "] 処理を開始しました。"
 
 //パス指定時の注意 Windows系は\\
 //ここにベースとするデータのファイルをセット
-//s.setBaseSampleData("C:\\WORK\\testdata\\青空\\text\\01_hangan_chimatao_iku.txt")
-s.setBaseSampleData("C:\\WORK\\testdata\\青空\\aozora_all_UTF8.txt","UTF-8")
+s.setBaseSampleData("./basesampledata/aozora_all_UTF8.txt","UTF-8")
 //ここに検索のキーにするデータを格納したファイルのパスを設定する
-s.setSearchIdData("C:\\WORK\\testdata\\names_200k.txt")
+s.setSearchIdData("./basesampledata/names_200k.txt")
 /*----------------------------------------
 サンプル作成のための設定
 生成されるファイル数は
  (setDirectoriesParDirectoryのsetDirectoryHierarchyDepth乗*setFilesParDirectory)+ setFilesParDirectory
  ----------------------------------------*/
-s.setMaxCreateFileNumber(1000) //生成するファイル数の上限
+s.setMaxCreateFileNumber(10000) //生成するファイル数の上限
 s.setFilesParDirectory(200)//1フォルダあたりの生成ファイル数
 s.setDirectoriesParDirectory(100)//1フォルダあたりの生成サブフォルダ数
-s.setDirectoryHierarchyDepth(5) //最大階層深度
+s.setDirectoryHierarchyDepth(4) //最大階層深度
 s.setOutFileLength(51200)//生成するファイルのサイズ
 
-s.setOutFileEncoding("Shift_JIS") //ファイルのエンコード
+s.setOutFileEncoding("UTF-8") //ファイルのエンコード
 //サンプルデータを出力するディレクトリのパスを指定して処理を開始する
-//s.generateSampleStructure("/Users/999/Documents/home")
-s.setSearchKeyFile("C:\\WORK\\testdata\\files\\searchkeypare.txt")
+s.setSearchKeyFile("/mnt/usbhdd/sampledata/ds1/searchkeypare.txt")
+s.generate("/mnt/usbhdd/sampledata/ds1")
+println "[" + s.getSystemDateString() + "] ds1のファイル出力が完了しました。"
+println "[" + s.getSystemDateString() + "] 続けてds2のファイル作成処理に取りかかります。"
+s.setSearchKeyFile("/mnt/usbhdd/sampledata/ds2/searchkeypare.txt")
 
-s.generateSampleStructure("C:\\WORK\\testdata\\files")
+s.generate("/mnt/usbhdd/sampledata/ds2")
 
-println "[" + s.getSystemDateString() + "] ファイル出力が完了しました。"
-
+println "[" + s.getSystemDateString() + "] ds2のファイル出力が完了しました。"
