@@ -28,6 +28,7 @@ public class SampleDocumentGeneratorMain {
 	private String BR = System.getProperty("line.separator")
 	//サンプルファイル読み込み用クラス
 	private SampleReader sr
+	private SearchIdentiferReader searchIdReader
 
 	private Long createdFileCount = 0
 
@@ -35,27 +36,28 @@ public class SampleDocumentGeneratorMain {
 	public SampleDocumentGeneratorMain() {
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
-
 	//SampleDataセット
-	public setBaseSampleData(String SampleDataPath){
-		sr = new SampleReader(SampleDataPath)
+	public setBaseSampleData(String sampleDataPath){
+		sr = new SampleReader(sampleDataPath)
 	}
-
+	//検索キー取得クラスセット
+	public setSearchIdData(String FilePath){
+		searchIdReader = new SearchIdentiferReader(FilePath)
+	}
+	
 	//ディレクトリ構造体とファイルの一括生成
 	public Void generateSampleStructure( String directoryPath, Long depth=1){
 		BigDecimal fileCount=0
 		BigDecimal dirCount=0
-
 		++depth
-		println depth.toString()
 		//当ディレクトリにサンプルファイル作成
+		String searchID = searchIdReader.getNextIdentifer()
 		for (Long i=1;i <=filesToBeCreate;i++){
 			//予定最大数だけ作ったらもう作らない
 			if (getCreatedFileCount()>=maxTotalFileCount){
 				break
 			}
-			generateTextFile(directoryPath,"デボン")
-			addFileCount()
+			generateTextFile(directoryPath,searchID)
 		}
 		//サブディレクトリ作成
 		if (getCreatedFileCount()>=maxTotalFileCount){
@@ -63,7 +65,7 @@ public class SampleDocumentGeneratorMain {
 			return
 		} else {
 			if  (depth >= directoryHierarchyDepth)  {
-				println "reached max depth"
+				//println "reached max depth"
 				return
 			} else {
 				while (dirCount <=directoriesToBeCreate){
@@ -106,6 +108,7 @@ public class SampleDocumentGeneratorMain {
 		bw.flush()
 		bw.close()
 		sb.setLength(0)
+		addFileCount()
 		println "file was created: " + directoryPath + FS + filname
 	}
 	private String getNewFileName(){

@@ -52,7 +52,7 @@ class SampleReader {
 			this.reopen()
 			lineData = br.readLine()
 		}
-		println lineData
+		//println lineData
 		return lineData
 	}
 
