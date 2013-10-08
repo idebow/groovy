@@ -9,7 +9,7 @@ println "[" + s.getSystemDateString() + "] 処理を開始しました。"
 //パス指定時の注意 Windows系は\\
 //ここにベースとするデータのファイルをセット
 //s.setBaseSampleData("C:\\WORK\\testdata\\青空\\text\\01_hangan_chimatao_iku.txt")
-s.setBaseSampleData("C:\\WORK\\testdata\\青空\\aozora_all.txt","Shift_JIS")
+s.setBaseSampleData("C:\\WORK\\testdata\\青空\\aozora_all_UTF8.txt","UTF-8")
 //ここに検索のキーにするデータを格納したファイルのパスを設定する
 s.setSearchIdData("C:\\WORK\\testdata\\names_200k.txt")
 /*----------------------------------------
@@ -23,7 +23,7 @@ s.setDirectoriesParDirectory(100)//1フォルダあたりの生成サブフォ�
 s.setDirectoryHierarchyDepth(5) //最大階層深度
 s.setOutFileLength(51200)//生成するファイルのサイズ
 
-s.setOutFileEncoding("UTF-8") //ファイルのエンコード
+s.setOutFileEncoding("Shift_JIS") //ファイルのエンコード
 //サンプルデータを出力するディレクトリのパスを指定して処理を開始する
 //s.generateSampleStructure("/Users/999/Documents/home")
 s.setSearchKeyFile("C:\\WORK\\testdata\\files\\searchkeypare.txt")

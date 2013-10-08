@@ -32,7 +32,7 @@ public class SampleDocumentGeneratorMain {
 	//改行文字
 	private String BR = System.getProperty("line.separator")
 	//書き出し文字コード
-	private String encoding ="UTF-8"
+	private String outEncoding ="UTF-8"
 	//サンプルファイル読み込み用クラス
 	private SampleReader sr
 	private SearchIdentiferReader searchIdReader
@@ -101,7 +101,7 @@ public class SampleDocumentGeneratorMain {
 		for(;;){
 			//マスターデータからサンプルデータ読み出し
 			lineData = sr.getNewLineData()
-			fileLength = fileLength + lineData.getBytes().length
+			fileLength = fileLength + lineData.getBytes(getOutFileEncoding()).length
 			sb.append(lineData.toString() + BR) //行末に改行追加
 			//データ長チェック処理
 			if(fileLength >=targetfileLength) {
@@ -156,10 +156,10 @@ public class SampleDocumentGeneratorMain {
 
 	//出力ファイルエンコーディング設定
 	public setOutFileEncoding(String encoding){
-		this.encoding = encoding
+		this.outEncoding = encoding
 	}
 	public String getOutFileEncoding(){
-		this.encoding
+		this.outEncoding
 	}
 	//トータル作成ファイルの上限
 	public setMaxCreateFileNumber(Long cont){
