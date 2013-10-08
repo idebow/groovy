@@ -52,7 +52,6 @@ class SampleReader {
 			this.reopen()
 			lineData = br.readLine()
 		}
-		//println lineData
 		return lineData
 	}
 
