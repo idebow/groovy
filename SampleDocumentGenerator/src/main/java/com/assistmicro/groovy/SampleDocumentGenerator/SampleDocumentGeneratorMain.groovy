@@ -19,6 +19,8 @@ public class SampleDocumentGeneratorMain {
 	private Long fileDirNoConter = 1
 	//マスタサンプルデータ
 	private String sampleFile="sample.txt"
+	//検索キーファイル
+	private String searchKeyFile
 	//1フォルダに生成するファイル数の上限 デフォルトは100
 	private Long filesParDirectory = 100
 	//1フォルダに生成するフォルダ数の上限
@@ -42,8 +44,8 @@ public class SampleDocumentGeneratorMain {
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 	//SampleDataセット
-	public setBaseSampleData(String sampleDataPath){
-		sr = new SampleReader(sampleDataPath)
+	public setBaseSampleData(String sampleDataPath, String encoding){
+		sr = new SampleReader(sampleDataPath,encoding)
 	}
 	//検索キー取得クラスセット
 	public setSearchIdData(String FilePath){
@@ -63,6 +65,7 @@ public class SampleDocumentGeneratorMain {
 			}
 			generateTextFile(directoryPath,searchID)
 		}
+		outputSearchKeyFile(directoryPath,searchID)
 		//サブディレクトリ作成
 		if (getCreatedFileCount()>=maxTotalFileCount){
 			//ファイル最大作成済みなら処理終了
@@ -89,12 +92,11 @@ public class SampleDocumentGeneratorMain {
 	//ファイル生成(生成するデータの末尾に任意の文字列を追加可能)
 	public generateTextFile(String directoryPath, String searchKey=""){
 		StringBuilder sb = new StringBuilder()
-		BufferedWriter bw
 		//指定の個数を生成するまでループ
 		//サンプルファイルからデータを読み込んで新しいファイルへ書込む
 		String filname = getNewFileName()
 		String lineData
-		bw = new BufferedWriter(new OutputStreamWriter (new FileOutputStream(directoryPath + FS + filname), getOutFileEncoding()))
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter (new FileOutputStream(directoryPath + FS + filname), getOutFileEncoding()))
 		Long fileLength=0
 		for(;;){
 			//マスターデータからサンプルデータ読み出し
@@ -113,6 +115,21 @@ public class SampleDocumentGeneratorMain {
 		sb.setLength(0)
 		addFileCount()
 		if (debug) println "file was created: " + directoryPath + FS + filname
+	}
+	//ディレクトリとそのフォルダに格納されるファイルの検索キーワードのペア情報を出力する
+	private outputSearchKeyFile(String directoryPath, String searchKey=""){
+		if(getSearchKeyFile() != "") {
+			StringBuilder sb = new StringBuilder()
+			String filname = getNewFileName()
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter (new FileOutputStream(getSearchKeyFile(),true ), getOutFileEncoding()))
+			Long fileLength=0
+			//マスターデータからサンプルデータ読み出し
+			sb.append(searchKey + "\t"+ directoryPath + BR) //行末に改行追加
+			bw.write(sb.toString())
+			bw.flush()
+			bw.close()
+			sb.setLength(0)
+		}
 	}
 	private String getNewFileName(){
 		//最新のシリアル番号からファイル名を生成
@@ -137,8 +154,7 @@ public class SampleDocumentGeneratorMain {
 		return createdFileCount
 	}
 
-
-		//出力ファイルエンコーディング設定
+	//出力ファイルエンコーディング設定
 	public setOutFileEncoding(String encoding){
 		this.encoding = encoding
 	}
@@ -165,11 +181,17 @@ public class SampleDocumentGeneratorMain {
 	public setOutFileLength(Long fileLength){
 		this.targetfileLength = fileLength
 	}
-
+	//検索用サーチキー情報ファイル格納パス
+	public setSearchKeyFile(String searchKeyFile=""){
+		this.searchKeyFile = searchKeyFile
+	}
+	public String getSearchKeyFile(){
+		this.searchKeyFile
+	}
 	//日付をとる
 	public String getSystemDateString(){
 		return (new Date(System.currentTimeMillis())).format("yyyy/MM/dd HH:MM:ss")
 	}
-	
+
 }
 

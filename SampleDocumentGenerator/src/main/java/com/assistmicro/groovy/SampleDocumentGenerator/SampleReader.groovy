@@ -30,16 +30,19 @@ class SampleReader {
 	]
 	ListIterator<Long> shiftCounterStepsItarator
 
-	public SampleReader(String sampleFilePath) {
+	private String encoding ="UTF-8"
+
+	public SampleReader(String sampleFilePath, String encoding) {
 		// TODO 自動生成されたコンストラクター・スタブ
 		shufleShiftLineCounter()
 		setSampleFilePath(sampleFilePath)
+		setEncoding(encoding)
 		reopen()
 	}
 	//ファイルを開く(開き直す)
 	public reopen(){
 		if (br != null) br.close()
-		br = new BufferedReader(new InputStreamReader(new  FileInputStream ( getSampleFilePath()),"Shift_JIS"))
+		br = new BufferedReader(new InputStreamReader(new  FileInputStream ( getSampleFilePath()),getEncoding()))
 	}
 	//一行文の文字列データを返却する
 	public String getNewLineData(){
@@ -74,6 +77,14 @@ class SampleReader {
 	}
 	public String getSampleFilePath(){
 		sampleFilePath
+	}
+
+	public setEncoding(String encoding){
+		this.encoding =encoding
+	}
+	
+	public String getEncoding(){
+		this.encoding
 	}
 
 }
